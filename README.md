@@ -1,1 +1,11 @@
-SELECT distinct(assigned) FROM `tbl_leads` WHERE assigned NOT IN (select concat(user_firstname,' ',user_lastname)  from tbl_users)
+Repo for week 2 bootcamp files
+
+
+FOLDER  STRUCTURE:
+==============
+
+Day 2 LABS
+--------------
+
+- documentation
+/docs
