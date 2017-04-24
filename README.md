@@ -1,0 +1,1 @@
+SELECT distinct(assigned) FROM `tbl_leads` WHERE assigned NOT IN (select concat(user_firstname,' ',user_lastname)  from tbl_users)
