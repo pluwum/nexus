@@ -70,20 +70,31 @@ class MyAndelaInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_create_room(self, arg):
-        """Usage: create_room <room_type> <room_name>"""
-        try:
-            result = self.dojo.createRoom(arg['<room_name>'],arg['<room_type>'])
-            if(result):
-                print("\n An office called Orange has been successfully created! \n")
+        """Usage: create_room <room_type> <room_name>..."""
+        room_type = arg['<room_type>']
+        room_names = arg['<room_name>']
 
-        except Exception as ex:
-            print('{}\n'.format(ex))
-
-    @docopt_cmd    
+        for room_name in room_names:
+            try:
+                result = self.dojo.createRoom(room_name, room_type)
+                if(result):
+                    print("\n An office called {} has been successfully created! \n".format(room_name))
+                else:
+                    print("\n Creating An office called {} failed! \n".format(arg[room_name]))   
+            except Exception as ex:
+                print('{}\n'.format(ex))
+        
+    @docopt_cmd
     def do_add_person(self, arg):
-        """Usage: add_person <person_name> <FELLOW> [<wants_accommodation>]"""
-
-        #print(arg)
+        
+        """Usage: add_person <person_name> <FELLOW|STAFF> [<wants_accommodation>]"""
+        print(arg)
+        try:
+            result = self.andela.addPerson(arg['<person_name>'],arg['<FELLOW'],arg['<wants_accommodation'])
+            if(result):
+                print(result)
+        except Exception as ex:
+            print('{}\n'.format(ex)) 
 
     @docopt_cmd    
     def do_print_room(self, arg):
