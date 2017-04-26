@@ -9,9 +9,22 @@ class Andela():
 		self.dojo = Dojo()
 
 	def createRoom(self, name, room_type):
-		return self.dojo.createRoom(name, room_type)
+		self.dojo.createRoom(name, room_type)
 
-	def addPerson(self, name, role, requires_living_space = False):
+	def getRoomOccupants(self, room_name):
+		room = self.dojo.getRoom(room_name)
+		if not room:
+			raise ValueError("Room Doesnt Exist")
+		else:
+			return room.getOccupants()	
+
+	def getRoomAllocations(self):
+		pass
+
+	def getUnallocated(self):
+		pass
+
+	def addPerson(self, name, role, requires_living_space=False):
 		if name is not None and role is not None:
 			roles = ['staff','fellow']
 			if (isinstance(name, str) and isinstance(role, str) and isinstance(requires_living_space, bool)):

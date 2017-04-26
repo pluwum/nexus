@@ -7,6 +7,12 @@ class Dojo(object):
 		#self.free_rooms = {}
 		self.room_types = ['office','livingspace']
 
+	def getRoom(self, room_name):
+		if room_name in self.rooms:
+			return self.rooms[room_name]
+		else:
+			return False
+
 	def createRoom(self, name, room_type):
 		if (not(name is None) and not(room_type is None)):
 			if (isinstance(name, str) and isinstance(room_type, str)):

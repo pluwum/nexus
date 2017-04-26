@@ -17,4 +17,4 @@ class Room():
 			self.occupants.remove(person_identifier)
 
 	def getOccupants(self):
-		return occupants
+		return self.occupants
