@@ -115,15 +115,21 @@ class MyAndelaInteractive (cmd.Cmd):
                         print("{} has been allocated the livingspace {}".format(first_name.capitalize(), new_person.living_space.name))
                     else:
                         print("No Living Space was allocated to {}".format(first_name.capitalize()))
-                        
+
         except Exception as ex:
             print('{}\n'.format(ex)) 
 
     @docopt_cmd    
     def do_print_room(self, arg):
         """Usage: print_room <room_name>"""
+        try:
+            room_occupants = self.andela.getRoomOccupants(arg['<room_name>'])
 
-        print(arg)
+            for person_identifier in room_occupants:
+                person = self.andela.people[person_identifier]['person']
+                print(person.name)
+        except Exception as ex:
+            print('{}\n'.format(ex))  
 
     @docopt_cmd
     def do_print_allocations(self, arg):
