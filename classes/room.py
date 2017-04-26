@@ -1,8 +1,8 @@
 class Room():
-	def __init__(self, name):
+	def __init__(self, name, max_capacity):
 		self.name = name
 		self.occupants = []
-		self.max_capacity = 4
+		self.max_capacity = max_capacity
 
 	def addOccupant(self, person_identifier):
 		if len(self.occupants) < self.max_capacity:

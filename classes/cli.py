@@ -63,7 +63,7 @@ class MyAndelaInteractive (cmd.Cmd):
     file = None        
 
     def __init__(self):
-        self.dojo = Dojo()
+        #self.dojo1 = Dojo()
         self.andela = Andela()
 
         super(MyAndelaInteractive, self).__init__()
@@ -76,7 +76,7 @@ class MyAndelaInteractive (cmd.Cmd):
 
         for room_name in room_names:
             try:
-                result = self.dojo.createRoom(room_name, room_type)
+                result = self.andela.createRoom(room_name, room_type)
                 if(result):
                     print("\n An {} called {} has been successfully created! \n".format(room_type, room_name))
                 else:
@@ -103,12 +103,19 @@ class MyAndelaInteractive (cmd.Cmd):
             person_identifier = self.andela.addPerson(person_name,role,wants_accommodation)
 
             if(person_identifier):
+                new_person = self.andela.people[person_identifier]['person']
                 print("{} {} has been successfully added".format(role.capitalize(), person_name.capitalize()))
-                print("{} has been allocated the office {}".format(first_name.capitalize(), self.andela.people[person_identifier]['office'].capitalize()))
                 
+                if(new_person.office_space is not None):
+                    print("{} has been allocated the office {}".format(first_name.capitalize(), new_person.office_space.name))
+                else:
+                    print("No office was allocated to {}".format(first_name.capitalize()))
                 if(wants_accommodation):
-                    if(self.andela.people[person_identifier]['living_space'] is not None):
-                        print("{} has been allocated the livingspace {}".format(first_name.capitalize(), self.andela.people[person_identifier]['living_space'].capitalize()))
+                    if(new_person.living_space is not None):
+                        print("{} has been allocated the livingspace {}".format(first_name.capitalize(), new_person.living_space.name))
+                    else:
+                        print("No Living Space was allocated to {}".format(first_name.capitalize()))
+                        
         except Exception as ex:
             print('{}\n'.format(ex)) 
 

@@ -12,7 +12,7 @@ class Dojo(object):
 			if (isinstance(name, str) and isinstance(room_type, str)):
 				if room_type.lower() in self.room_types:
 					if name in self.rooms:
-						raise ValueError("Room already exists")
+						raise ValueError(name+" Room already exists")
 					else:
 						if room_type == "office":
 							 new_room = Office(name)
@@ -29,17 +29,19 @@ class Dojo(object):
 			raise ValueError("One or more arguments required is not given")
 
 	def getFreeRoom(self, room_type, room_to_ignore=None):
+		
 		for room in self.rooms:
-			if room != room_to_ignore and room.room_type == room_type:
-				if room.occupants < room.max_capacity:
-					return room.name
+			room_obj = self.rooms[room]
+			if room_obj.name != room_to_ignore and room_obj.room_type == room_type:
+				if len(room_obj.occupants) < room_obj.max_capacity:
+					return room_obj
 		return None
 
 	def getFreeOfficeSpace(self, room_to_ignore=None):
 		return self.getFreeRoom("office")
 
-	def getFreeLivingSpace(self):
+	def getFreeLivingSpace(self, room_to_ignore=None):
 		return self.getFreeRoom("livingspace")
 		
 	def allocateRoom():
-		pass	
+		pass
