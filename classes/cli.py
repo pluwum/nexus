@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 """
 The boiler plate for this file is taken from 
-the official doctop examples from on github 
+the official docops examples from on github 
 https://raw.githubusercontent.com/docopt/docopt/master/examples/interactive_example.py
 
 Usage:
-    my_program tcp <host> <port> [--timeout=<seconds>]
-    my_program serial <port> [--baud=<n>] [--timeout=<seconds>]
-    my_program (-i | --interactive)
-    my_program (-h | --help | --version)
+    cli create_room <room_type> <room_name>
+    cli add_person <person_name> <FELLOW> [<wants_accommodation>]
+    cli (-i | --interactive)
+    cli (-h | --help | --version)
 
 Options:
     -i, --interactive  Interactive Mode
@@ -66,7 +66,7 @@ class MyAndelaInteractive (cmd.Cmd):
 
     @docopt_cmd    
     def do_add_person(self, arg):
-        """Usage: add_person <person_name> <FELLOW|STAFF> [wants_accommodation]"""
+        """Usage: add_person <person_name> <FELLOW> [<wants_accommodation>]"""
 
         print(arg)
 
@@ -78,13 +78,13 @@ class MyAndelaInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_print_allocations(self, arg):
-        """Usage: print_allocations [-o=filename]"""
+        """Usage: print_allocations [-o=<filename>]"""
 
         print(arg)
 
     @docopt_cmd    
     def do_print_unallocated(self, arg):
-        """Usage: print_unallocated [-o=filename]"""
+        """Usage: print_unallocated [-o=<filename>]"""
 
         print(arg)
 
@@ -102,7 +102,7 @@ class MyAndelaInteractive (cmd.Cmd):
 
     @docopt_cmd    
     def do_save_state(self, arg):
-        """Usage: save_state [--db=sqlite_database]"""
+        """Usage: save_state [--db=<sqlite_database>]"""
 
         print(arg)
 
