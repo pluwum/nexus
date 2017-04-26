@@ -72,7 +72,10 @@ class MyAndelaInteractive (cmd.Cmd):
     def do_create_room(self, arg):
         """Usage: create_room <room_type> <room_name>"""
         try:
-            msg = self.dojo.createRoom(arg['<room_name>'],arg['<room_type>'])
+            result = self.dojo.createRoom(arg['<room_name>'],arg['<room_type>'])
+            if(result):
+                print("\n An office called Orange has been successfully created! \n")
+
         except Exception as ex:
             print('{}\n'.format(ex))
 
