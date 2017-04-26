@@ -78,7 +78,7 @@ class MyAndelaInteractive (cmd.Cmd):
             try:
                 result = self.dojo.createRoom(room_name, room_type)
                 if(result):
-                    print("\n An office called {} has been successfully created! \n".format(room_name))
+                    print("\n An {} called {} has been successfully created! \n".format(room_type, room_name))
                 else:
                     print("\n Creating An office called {} failed! \n".format(arg[room_name]))   
             except Exception as ex:
@@ -87,12 +87,28 @@ class MyAndelaInteractive (cmd.Cmd):
     @docopt_cmd
     def do_add_person(self, arg):
         
-        """Usage: add_person <person_name> <FELLOW|STAFF> [<wants_accommodation>]"""
-        print(arg)
+        """Usage: add_person <person_name> [<role>] [<wants_accommodation>]"""
+
+        person_name = arg['<person_name>']
+        role = arg['<role>']
+        first_name = person_name.split(' ', 1)[-1]
+        wants_accommodation = arg['<wants_accommodation>']
+
+        if(wants_accommodation == 'Y' ):
+            wants_accommodation = True
+        else:
+            wants_accommodation = False
+
         try:
-            result = self.andela.addPerson(arg['<person_name>'],arg['<FELLOW'],arg['<wants_accommodation'])
-            if(result):
-                print(result)
+            person_identifier = self.andela.addPerson(person_name,role,wants_accommodation)
+
+            if(person_identifier):
+                print("{} {} has been successfully added".format(role.capitalize(), person_name.capitalize()))
+                print("{} has been allocated the office {}".format(first_name.capitalize(), self.andela.people[person_identifier]['office'].capitalize()))
+                
+                if(wants_accommodation):
+                    if(self.andela.people[person_identifier]['living_space'] is not None):
+                        print("{} has been allocated the livingspace {}".format(first_name.capitalize(), self.andela.people[person_identifier]['living_space'].capitalize()))
         except Exception as ex:
             print('{}\n'.format(ex)) 
 

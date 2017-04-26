@@ -1,13 +1,12 @@
 from unittest import TestCase
-from app.andela import Andela
-from app.dojo import Dojo
+from classes.andela import Andela
+
 
 class TestAddPerson(TestCase):
 	def setUp(self):
 		self.andela = Andela()
-		self.dojo = Dojo()
-		self.dojo.createRoom("Blue","office")
-		self.dojo.createRoom("Yellow","livingspace")
+		self.andela.createRoom("Blue","office")
+		self.andela.createRoom("Yellow","livingspace")
 
 	def test_method_creates_person_successfully_and_assigns_office(self):
 		initial_people_count = len(self.andela.people)
