@@ -20,6 +20,9 @@ import sys
 import cmd
 from docopt import docopt, DocoptExit
 
+from classes.dojo import Dojo
+from classes.andela import Andela
+
 
 def docopt_cmd(func):
     """
@@ -52,23 +55,32 @@ def docopt_cmd(func):
     return fn
 
 
+
 class MyAndelaInteractive (cmd.Cmd):
     intro = 'Welcome to Office Space Allocation System!' \
         + ' (type help for a list of commands.)'
-    prompt = '(cli) '
-    file = None
+    prompt = '>>> '
+    file = None        
+
+    def __init__(self):
+        self.dojo = Dojo()
+        self.andela = Andela()
+
+        super(MyAndelaInteractive, self).__init__()
 
     @docopt_cmd
     def do_create_room(self, arg):
         """Usage: create_room <room_type> <room_name>"""
-
-        print(arg)
+        try:
+            msg = self.dojo.createRoom(arg['<room_name>'],arg['<room_type>'])
+        except Exception as ex:
+            print('{}\n'.format(ex))
 
     @docopt_cmd    
     def do_add_person(self, arg):
         """Usage: add_person <person_name> <FELLOW> [<wants_accommodation>]"""
 
-        print(arg)
+        #print(arg)
 
     @docopt_cmd    
     def do_print_room(self, arg):
