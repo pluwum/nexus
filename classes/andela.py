@@ -1,5 +1,5 @@
-from classes.staff import Staff
-from classes.fellow import Fellow
+from classes.person import Staff
+from classes.person import Fellow
 from classes.dojo import Dojo
 
 class Andela():

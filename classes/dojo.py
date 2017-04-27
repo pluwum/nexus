@@ -1,5 +1,5 @@
-from classes.living_space import LivingSpace
-from classes.office import Office
+from classes.room import LivingSpace
+from classes.room import Office
 
 class Dojo(object):
 	def __init__(self):
