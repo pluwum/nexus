@@ -1,5 +1,5 @@
 from unittest import TestCase
-from classes.andela import Dojo
+from classes.dojo import Dojo
 
 class TestAddPerson(TestCase):
 	def setUp(self):
@@ -12,14 +12,14 @@ class TestAddPerson(TestCase):
 		identifier = self.dojo.addPerson("Patrick",'staff')
 		current_people_count = len(self.dojo.people)
 
-		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.dojo.people[identifier]["person"].office_space)], msg = 'Person not added to people list or office room not assigned') 
+		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.dojo.people[identifier].office_space)], msg = 'Person not added to people list or office room not assigned') 
 
 	def test_method_creates_fellow_successfully_and_assigns_living_space(self):
 		initial_people_count = len(self.dojo.people)
 		identifier = self.dojo.addPerson("Alvin",'fellow',True)
 		current_people_count = len(self.dojo.people)
 
-		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.dojo.people[identifier]["person"].living_space)], msg = 'Fellow not added to fellow list or living space not assigned') 
+		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.dojo.people[identifier].living_space)], msg = 'Fellow not added to fellow list or living space not assigned') 
 
 	def test_method_defaults_to_N_if_living_space_not_specified(self):
 		identifier = self.dojo.addPerson("Alvin",'fellow')
@@ -179,7 +179,7 @@ class TestReallocate(TestCase):
 		andela.createRoom("Pink","office")
 		andela.rellocatePerson(alvin,'Pink')
 
-		self.assertEqual('Pink', andela.people[alvin]['person'].office_space)
+		self.assertEqual('Pink', andela.people[alvin].office_space)
 
 	def test_method_allocates_room_if_person_unlocated(self):
 		pass
