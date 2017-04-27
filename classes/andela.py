@@ -11,12 +11,18 @@ class Andela():
 	def createRoom(self, name, room_type):
 		self.dojo.createRoom(name, room_type)
 
-	def getRoomOccupants(self, room_name):
+	def getRoom(self, room_name):
 		room = self.dojo.getRoom(room_name)
 		if not room:
 			raise ValueError("Room Doesnt Exist")
 		else:
-			return room.getOccupants()	
+			return room
+
+	def getRoomOccupants(self, room_name):
+		room = self.getRoom(room_name)
+		return room.getOccupants()	
+
+	
 
 	def getRoomAllocations(self):
 		rooms = self.dojo.getAllRoomsWithAtleastOneOccupant()

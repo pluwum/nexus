@@ -136,7 +136,21 @@ class MyAndelaInteractive (cmd.Cmd):
     def do_print_allocations(self, arg):
         """Usage: print_allocations [-o=<filename>]"""
 
-        print(arg)
+        try:
+            rooms = self.andela.getRoomAllocations()
+
+            for room in rooms:
+                print(room.name.upper())
+                print("-------------------------------------")
+                members = []
+                for person_identifier in room.occupants:
+                    person = self.andela.people[person_identifier]['person']
+                    members.append(person.name)
+                print(", ".join(members))  
+                print('\n')
+
+        except Exception as ex:
+            print('{}\n'.format(ex))  
 
     @docopt_cmd    
     def do_print_unallocated(self, arg):

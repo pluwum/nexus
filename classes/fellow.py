@@ -9,3 +9,8 @@ class Fellow(Person):
 	def allocateLivingSpace(self, room):
 		if self.requires_living_space:
 			self.living_space = room
+	def requiresLivingSpace(self):
+		if self.requires_living_space:
+			return "Y"
+		else:
+			return "N"			
