@@ -12,7 +12,7 @@ class TestPrintRoomAllocations(TestCase):
 		self.andela.addPerson('calvin','fellow')
 		self.andela.addPerson('Dalvin','staff')
 
-	def test_method_successfully_returns_room_occupants(self):
+	def test_method_successfully_returns_room_allocations(self):
 		allocations = self.andela.getRoomAllocations()
 
 		self.assertListEqual([True, 2], [isinstance(allocations, list), len(allocations)])
