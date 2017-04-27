@@ -1,5 +1,5 @@
 from unittest import TestCase
-from app.dojo import Dojo
+from classes.dojo import Dojo
 
 class TestCreateRoom(TestCase):
 	def setUp(self):

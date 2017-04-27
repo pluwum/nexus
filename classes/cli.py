@@ -23,7 +23,6 @@ from docopt import docopt, DocoptExit
 from classes.dojo import Dojo
 from classes.andela import Andela
 
-
 def docopt_cmd(func):
     """
     This decorator is used to simplify the try/except block and pass the result
@@ -110,6 +109,7 @@ class MyAndelaInteractive (cmd.Cmd):
                     print("{} has been allocated the office {}".format(first_name.capitalize(), new_person.office_space.name))
                 else:
                     print("No office was allocated to {}".format(first_name.capitalize()))
+
                 if(wants_accommodation):
                     if(new_person.living_space is not None):
                         print("{} has been allocated the livingspace {}".format(first_name.capitalize(), new_person.living_space.name))
@@ -128,6 +128,7 @@ class MyAndelaInteractive (cmd.Cmd):
             for person_identifier in room_occupants:
                 person = self.andela.people[person_identifier]['person']
                 print(person.name)
+
         except Exception as ex:
             print('{}\n'.format(ex))  
 

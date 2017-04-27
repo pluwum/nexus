@@ -27,11 +27,13 @@ class Andela():
 	def addPerson(self, name, role, requires_living_space=False):
 		if name is not None and role is not None:
 			roles = ['staff','fellow']
+
 			if (isinstance(name, str) and isinstance(role, str) and isinstance(requires_living_space, bool)):
 				if(role.lower() in roles):
 					identifier = len(self.people) + 1
 					living_space = None
 					office_space = self.dojo.getFreeOfficeSpace()
+					
 					if(role == "staff"):
 						if requires_living_space is False:
 							new_person = Staff(name, identifier)

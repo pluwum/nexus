@@ -13,14 +13,14 @@ class TestAddPerson(TestCase):
 		identifier = self.andela.addPerson("Patrick",'staff')
 		current_people_count = len(self.andela.people)
 
-		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.andela.people[identifier]["office"])], msg = 'Person not added to people list or office room not assigned') 
+		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.andela.people[identifier]["office"].name)], msg = 'Person not added to people list or office room not assigned') 
 
 	def test_method_creates_fellow_successfully_and_assigns_living_space(self):
 		initial_people_count = len(self.andela.people)
 		identifier = self.andela.addPerson("Alvin",'fellow',True)
 		current_people_count = len(self.andela.people)
 
-		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.andela.people[identifier]["living_space"])], msg = 'Fellow not added to fellow list or living space not assigned') 
+		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.andela.people[identifier]["living_space"].name)], msg = 'Fellow not added to fellow list or living space not assigned') 
 
 	def test_method_defaults_to_N_if_living_space_not_specified(self):
 		identifier = self.andela.addPerson("Alvin",'fellow')
