@@ -34,8 +34,17 @@ class Dojo(object):
 		else:		
 			raise ValueError("One or more arguments required is not given")
 
+	def getAllRoomsWithAtleastOneOccupant(self):
+		rooms = []
+		for room in self.rooms:
+			room_obj = self.rooms[room]
+			
+			if len(room_obj.occupants) > 0:
+				rooms.append(room_obj)
+
+		return rooms
+
 	def getFreeRoom(self, room_type, room_to_ignore=None):
-		
 		for room in self.rooms:
 			room_obj = self.rooms[room]
 			if room_obj.name != room_to_ignore and room_obj.room_type == room_type:

@@ -19,7 +19,8 @@ class Andela():
 			return room.getOccupants()	
 
 	def getRoomAllocations(self):
-		pass
+		rooms = self.dojo.getAllRoomsWithAtleastOneOccupant()
+		return rooms
 
 	def getUnallocated(self):
 		pass
@@ -33,7 +34,7 @@ class Andela():
 					identifier = len(self.people) + 1
 					living_space = None
 					office_space = self.dojo.getFreeOfficeSpace()
-					
+
 					if(role == "staff"):
 						if requires_living_space is False:
 							new_person = Staff(name, identifier)
