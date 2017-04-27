@@ -21,7 +21,7 @@ import sys
 import cmd
 from docopt import docopt, DocoptExit
 
-from classes.andela import Andela
+from classes.dojo import Andela
 
 def docopt_cmd(func):
     """

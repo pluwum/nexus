@@ -20,7 +20,7 @@ class Dojo():
 	def getUnallocatedPeople(self):
 		unallocated = []
 		for person in self.people:
-			person_object = self.people[person]['person']
+			person_object = self.people[person]
 
 			if(person_object.office_space is None):
 				unallocated.append(person_object)
@@ -59,17 +59,16 @@ class Dojo():
 						new_person.allocateLivingSpace(living_space.name)
 						living_space.addOccupant(identifier)
 
-					self.people[identifier]	= {'person':new_person, 'office':new_person.office_space,'living_space':new_person.living_space}
+					self.people[identifier]	= new_person
 					return identifier
-			else:
-				raise TypeError("One or more invalid inputs")
-		else:
-			raise ValueError("One or more required inputs missing")
+				raise ValueError("Invalide Role argument")
+			raise TypeError("One or more invalid inputs")
+		raise ValueError("One or more required inputs missing")
 
 	def rellocatePerson(self, person_identifier, room_name):
 		if(isinstance(room_name, str)):
 			if(person_identifier in self.people):
-				person = self.people[person_identifier]['person']
+				person = self.people[person_identifier]
 				rooms = self.getAllRooms()
 				if room_name in rooms:
 					if rooms[room_name].room_type == "office":
@@ -81,12 +80,11 @@ class Dojo():
 								old_room = self.getRoom(person.office_space)
 								office_space.addOccupant(person_identifier)
 								person.allocateOfficeSpace(office_space.name)
-								old_room.evictOccupant(person_identifier)	
-							
-						else:
-							raise ValueError("New room is the same as the old room")
+								old_room.evictOccupant(person_identifier)
+								return
+						raise ValueError("New room is the same as the old room")
 					else:
-						if room_name != self.people[person_identifier]['person'].living_space:
+						if room_name != self.people[person_identifier].living_space:
 							living_space = self.getFreeLivingSpace(person.living_space)
 														
 							#Add to New and Evict from old room when succesfully found a office room
@@ -94,15 +92,12 @@ class Dojo():
 								old_room = self.getRoom(person.office_space)
 								living_space.addOccupant(person_identifier)
 								person.allocateLivingSpace(living_space.name)
-								old_room.evictOccupant(person_identifier)	
-						else:
-							raise ValueError("New room is the same as the old room")								
-				else:
-					raise ValueError("Room does not exist")
-			else:
-				raise ValueError("person with given ID does not exist")
-
-		return False
+								old_room.evictOccupant(person_identifier)
+								return
+						raise ValueError("New room is the same as the old room")
+				raise ValueError("Room does not exist")
+			raise ValueError("person with given ID does not exist")
+		raise ValueError("person with given ID does not exist")
 
 	def allocateFromFile(self):
 		path_to_file = "data\people.txt"
@@ -112,7 +107,6 @@ class Dojo():
 			for line in file:
 				args = line.split()
 				requires_living_space = False
-
 				if(len(args) >= 3):
 					name = args[0] + args[1]
 					role = args[2]
@@ -121,10 +115,10 @@ class Dojo():
 						requires_living_space = args[3]
 						if(requires_living_space):
 							requires_living_space = True
-				else:
-					print("You have arguments missing, please check and try again{}".format(args))
-
-				self.addPerson(name, role, requires_living_space)
+					self.addPerson(name, role, requires_living_space)		
+					continue		
+				print("You have arguments missing, please check file and try again{}".format(args))
+				continue
 		except Exception as ex:
 			print('{}\n'.format(ex))
 
@@ -140,9 +134,8 @@ class Dojo():
 		if (not(name is None) and not(room_type is None)):
 			if (isinstance(name, str) and isinstance(room_type, str)):
 				if room_type.lower() in self.room_types:
-					if name in self.rooms:
-						raise ValueError(name+" Room already exists")
-					else:
+
+					if not(name in self.rooms):
 						if room_type == "office":
 							 new_room = Office(name)
 						else:
@@ -150,12 +143,11 @@ class Dojo():
 
 						self.rooms[name] = new_room
 						return True
-				else:
-					raise ValueError("Room must be either type 'office' or 'livingspace' ")	
-			else:
-				raise TypeError("Room name must be string")
-		else:		
-			raise ValueError("One or more arguments required is not given")
+					raise ValueError(name+" Room already exists")
+
+				raise ValueError("Room must be either type 'office' or 'livingspace' ")
+			raise TypeError("Room name must be string")
+		raise ValueError("One or more arguments required is not given")
 
 	def getAllRoomsWithAtleastOneOccupant(self):
 		rooms = []
@@ -183,3 +175,9 @@ class Dojo():
 		
 	def allocateRoom():
 		pass
+
+dojo = Dojo()
+dojo.allocateFromFile()
+dojo.addPerson('name', 'staff')
+for i in dojo.people:
+	print(dojo.people[i])
