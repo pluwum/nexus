@@ -31,4 +31,5 @@ class Fellow(Person):
 		if self.requires_living_space:
 			return "Y"
 		else:
-			return "N"					
+			return "N"
+			

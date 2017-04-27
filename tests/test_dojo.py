@@ -1,42 +1,41 @@
 from unittest import TestCase
-from classes.andela import Andela
 from classes.andela import Dojo
 
 class TestAddPerson(TestCase):
 	def setUp(self):
-		self.andela = Andela()
-		self.andela.createRoom("Blue","office")
-		self.andela.createRoom("Yellow","livingspace")
+		self.dojo = Dojo()
+		self.dojo.createRoom("Blue","office")
+		self.dojo.createRoom("Yellow","livingspace")
 
 	def test_method_creates_person_successfully_and_assigns_office(self):
-		initial_people_count = len(self.andela.people)
-		identifier = self.andela.addPerson("Patrick",'staff')
-		current_people_count = len(self.andela.people)
+		initial_people_count = len(self.dojo.people)
+		identifier = self.dojo.addPerson("Patrick",'staff')
+		current_people_count = len(self.dojo.people)
 
-		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.andela.people[identifier]["person"].office_space)], msg = 'Person not added to people list or office room not assigned') 
+		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.dojo.people[identifier]["person"].office_space)], msg = 'Person not added to people list or office room not assigned') 
 
 	def test_method_creates_fellow_successfully_and_assigns_living_space(self):
-		initial_people_count = len(self.andela.people)
-		identifier = self.andela.addPerson("Alvin",'fellow',True)
-		current_people_count = len(self.andela.people)
+		initial_people_count = len(self.dojo.people)
+		identifier = self.dojo.addPerson("Alvin",'fellow',True)
+		current_people_count = len(self.dojo.people)
 
-		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.andela.people[identifier]["person"].living_space)], msg = 'Fellow not added to fellow list or living space not assigned') 
+		self.assertListEqual([current_people_count, str],[initial_people_count + 1,type(self.dojo.people[identifier]["person"].living_space)], msg = 'Fellow not added to fellow list or living space not assigned') 
 
 	def test_method_defaults_to_N_if_living_space_not_specified(self):
-		identifier = self.andela.addPerson("Alvin",'fellow')
-		#self.assertEqual(None, type(self.andela.people[identifier]["living_space"]))
+		identifier = self.dojo.addPerson("Alvin",'fellow')
+		#self.assertEqual(None, type(self.dojo.people[identifier]["living_space"]))
 
 	def test_method_raises_error_if_staff_wants_accomodation(self):
-		self.assertRaises(ValueError,self.andela.addPerson,"Patricia",'staff',True)
+		self.assertRaises(ValueError,self.dojo.addPerson,"Patricia",'staff',True)
 
 	def test_method_raises_error_if_person_already_exists(self):
 		pass
 
 	def test_method_raises_error_if_person_name_arg_missing(self):
-		self.assertRaises(ValueError,self.andela.addPerson,None,'staff')
+		self.assertRaises(ValueError,self.dojo.addPerson,None,'staff')
 
 	def test_method_raises_error_if_role_arg_missing(self):
-		self.assertRaises(ValueError,self.andela.addPerson,'Malvin',None)
+		self.assertRaises(ValueError,self.dojo.addPerson,'Malvin',None)
 
 class TestCreateRoom(TestCase):
 	def setUp(self):
@@ -70,21 +69,21 @@ class TestCreateRoom(TestCase):
 
 class TestPrintRoomAllocations(TestCase):
 	def setUp(self):
-		self.andela = Andela()
-		self.andela.createRoom("Blue","office")
-		self.andela.createRoom("Yellow","livingspace")
+		self.dojo = Dojo()
+		self.dojo.createRoom("Blue","office")
+		self.dojo.createRoom("Yellow","livingspace")
 
-		self.andela.addPerson('patrick','fellow',True)
-		self.andela.addPerson('alvin','staff')
-		self.andela.addPerson('calvin','fellow')
-		self.andela.addPerson('Dalvin','staff')
+		self.dojo.addPerson('patrick','fellow',True)
+		self.dojo.addPerson('alvin','staff')
+		self.dojo.addPerson('calvin','fellow')
+		self.dojo.addPerson('Dalvin','staff')
 
 	def test_method_successfully_returns_room_allocations(self):
-		allocations = self.andela.getRoomAllocations()
+		allocations = self.dojo.getRoomAllocations()
 
 		self.assertListEqual([True, 2], [isinstance(allocations, list), len(allocations)])
 	def test_method_returns_empty_when_no_rooms_allocated(self):
-		andela = Andela()
+		andela = Dojo()
 		andela.createRoom("Blue","office")
 		andela.createRoom("Yellow","livingspace")
 
@@ -93,45 +92,45 @@ class TestPrintRoomAllocations(TestCase):
 
 class TestPrintRoom(TestCase):
 	def setUp(self):
-		self.andela = Andela()
-		self.andela.createRoom("Blue","office")
-		self.andela.createRoom("Yellow","livingspace")
+		self.dojo = Dojo()
+		self.dojo.createRoom("Blue","office")
+		self.dojo.createRoom("Yellow","livingspace")
 
-		self.andela.addPerson('patrick','fellow',True)
-		self.andela.addPerson('alvin','staff')
-		self.andela.addPerson('calvin','fellow')
-		self.andela.addPerson('Dalvin','staff')
+		self.dojo.addPerson('patrick','fellow',True)
+		self.dojo.addPerson('alvin','staff')
+		self.dojo.addPerson('calvin','fellow')
+		self.dojo.addPerson('Dalvin','staff')
 
 	def test_method_successfully_returns_room_occupants(self):
-		office_occupants = self.andela.getRoomOccupants("Blue")
-		livingspace_occupants = self.andela.getRoomOccupants("Yellow")
+		office_occupants = self.dojo.getRoomOccupants("Blue")
+		livingspace_occupants = self.dojo.getRoomOccupants("Yellow")
 
 		self.assertListEqual([True, 4, 1], [isinstance(office_occupants, list), len(office_occupants), len(livingspace_occupants)])
 	
 	def test_method_raises_exception_if_room_given_doesnt_exist(self):
-		self.assertRaises(ValueError, self.andela.getRoomOccupants, "Red")
+		self.assertRaises(ValueError, self.dojo.getRoomOccupants, "Red")
 
 class TestPrintUnallocated(TestCase):
 	def setUp(self):
-		self.andela = Andela()
+		self.dojo = Dojo()
 
-		self.andela.addPerson('patrick','fellow',True)
-		self.andela.addPerson('alvin','staff')
-		self.andela.addPerson('calvin','fellow')
-		self.andela.addPerson('Dalvin','staff')
+		self.dojo.addPerson('patrick','fellow',True)
+		self.dojo.addPerson('alvin','staff')
+		self.dojo.addPerson('calvin','fellow')
+		self.dojo.addPerson('Dalvin','staff')
 
 	def test_method_successfully_returns_unallocated_people(self):
-		unallocated_people = self.andela.getUnallocatedPeople()
+		unallocated_people = self.dojo.getUnallocatedPeople()
 
 		self.assertListEqual([True, 4], [isinstance(unallocated_people, list), len(unallocated_people)])
 		
 	def test_method_returns_empty_when_every_one_is_allocated(self):
-		andela = Andela()
+		andela = Dojo()
 		andela.createRoom("Blue","office")
-		self.andela.createRoom("Yellow","livingspace")
-		self.andela.addPerson('patrick','fellow',True)
-		self.andela.addPerson('alvin','staff')
-		self.andela.addPerson('calvin','fellow')
+		self.dojo.createRoom("Yellow","livingspace")
+		self.dojo.addPerson('patrick','fellow',True)
+		self.dojo.addPerson('alvin','staff')
+		self.dojo.addPerson('calvin','fellow')
 	
 
 		unallocated_people = andela.getUnallocatedPeople()
@@ -139,21 +138,21 @@ class TestPrintUnallocated(TestCase):
 
 class TestPrintRoomAllocations(TestCase):
 	def setUp(self):
-		self.andela = Andela()
-		self.andela.createRoom("Blue","office")
-		self.andela.createRoom("Yellow","livingspace")
+		self.dojo = Dojo()
+		self.dojo.createRoom("Blue","office")
+		self.dojo.createRoom("Yellow","livingspace")
 
-		self.andela.addPerson('patrick','fellow',True)
-		self.andela.addPerson('alvin','staff')
-		self.andela.addPerson('calvin','fellow')
-		self.andela.addPerson('Dalvin','staff')
+		self.dojo.addPerson('patrick','fellow',True)
+		self.dojo.addPerson('alvin','staff')
+		self.dojo.addPerson('calvin','fellow')
+		self.dojo.addPerson('Dalvin','staff')
 
 	def test_method_successfully_returns_room_allocations(self):
-		allocations = self.andela.getRoomAllocations()
+		allocations = self.dojo.getRoomAllocations()
 
 		self.assertListEqual([True, 2], [isinstance(allocations, list), len(allocations)])
 	def test_method_returns_empty_when_no_rooms_allocated(self):
-		andela = Andela()
+		andela = Dojo()
 		andela.createRoom("Blue","office")
 		andela.createRoom("Yellow","livingspace")
 
@@ -162,18 +161,18 @@ class TestPrintRoomAllocations(TestCase):
 
 class TestReallocate(TestCase):
 	def setUp(self):
-		self.andela = Andela()
-		self.andela.createRoom("Blue","office")
-		self.andela.createRoom("Pink","office")
-		self.andela.createRoom("Yellow","livingspace")
+		self.dojo = Dojo()
+		self.dojo.createRoom("Blue","office")
+		self.dojo.createRoom("Pink","office")
+		self.dojo.createRoom("Yellow","livingspace")
 
-		self.patrick = self.andela.addPerson('patrick','fellow',True)
-		self.alvin =self.andela.addPerson('alvin','staff')
-		self.calvin =self.andela.addPerson('calvin','fellow')
-		self.dalvin =self.andela.addPerson('Dalvin','staff')
+		self.patrick = self.dojo.addPerson('patrick','fellow',True)
+		self.alvin =self.dojo.addPerson('alvin','staff')
+		self.calvin =self.dojo.addPerson('calvin','fellow')
+		self.dalvin =self.dojo.addPerson('Dalvin','staff')
 
 	def test_method_successfully_relocates_person(self):
-		andela = Andela()
+		andela = Dojo()
 		andela.createRoom("Blue","office")
 		alvin = andela.addPerson('alvin','staff')
 
@@ -189,10 +188,10 @@ class TestReallocate(TestCase):
 		pass
 
 	def test_method_raises_exception_if_room_doesnt_exist(self):
-		self.assertRaises(ValueError, self.andela.rellocatePerson, self.alvin, 'White')
+		self.assertRaises(ValueError, self.dojo.rellocatePerson, self.alvin, 'White')
 
 	def test_method_raise_exception_if_new_room_is_same_as_old_room(self):
-		andela = Andela()
+		andela = Dojo()
 		andela.createRoom("Blue","office")
 		alvin = andela.addPerson('alvin','staff')
 		self.assertRaises(ValueError, andela.rellocatePerson, alvin, 'Blue')
