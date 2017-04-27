@@ -55,8 +55,8 @@ class Dojo(object):
 					return room_obj
 		return None
 
-	def getFreeOfficeSpace(self, room_to_ignore=None, room_to_ignore):
-		return self.getFreeRoom("office")
+	def getFreeOfficeSpace(self, room_to_ignore=None):
+		return self.getFreeRoom("office", room_to_ignore)
 
 	def getFreeLivingSpace(self, room_to_ignore=None):
 		return self.getFreeRoom("livingspace", room_to_ignore)

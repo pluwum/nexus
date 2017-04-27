@@ -78,22 +78,34 @@ class Andela():
 	def rellocatePerson(self, person_identifier, room_name):
 		if(isinstance(room_name, str)):
 			if(person_identifier in self.people):
+				person = self.people[person_identifier]['person']
 				rooms = self.dojo.getAllRooms()
 				if room_name in rooms:
 					if rooms[room_name].room_type == "office":
-						if room_name != self.people[person_identifier]['person'].office_space:
-							office_space = self.dojo.getFreeOfficeSpace()
-							office_space.addOccupant(person_identifier)
-							#TODO: Evict from old room
+						if room_name != person.office_space:
+							office_space = self.dojo.getFreeOfficeSpace(person.office_space)
+							
+							#Add to New and Evict from old room when succesfully found a office room
+							if(office_space is not None):
+								old_room = self.dojo.getRoom(person.office_space)
+								office_space.addOccupant(person_identifier)
+								person.allocateOfficeSpace(office_space.name)
+								old_room.evictOccupant(person_identifier)	
+							
 						else:
 							raise ValueError("New room is the same as the old room")
 					else:
 						if room_name != self.people[person_identifier]['person'].living_space:
-							living_space = self.dojo.getFreeLivingSpace(room_name)
-							living_space.addOccupant(person_identifier)
-							#TODO: Evict from Old room
+							living_space = self.dojo.getFreeLivingSpace(person.living_space)
+														
+							#Add to New and Evict from old room when succesfully found a office room
+							if(living_space is not None):
+								old_room = self.dojo.getRoom(person.office_space)
+								living_space.addOccupant(person_identifier)
+								person.allocateLivingSpace(living_space.name)
+								old_room.evictOccupant(person_identifier)	
 						else:
-							raise ValueError("New room is the same as the old room")					
+							raise ValueError("New room is the same as the old room")								
 				else:
 					raise ValueError("Room does not exist")
 			else:

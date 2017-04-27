@@ -167,16 +167,16 @@ class MyAndelaInteractive (cmd.Cmd):
 
     @docopt_cmd    
     def do_print_unallocated(self, arg):
-        """Usage: print_unallocated [-o=<filename>]"""
+        """Usage: print_unallocated [--o=<filename>]"""
 
         doc = self.do_print_unallocated.__doc__
         print_to_file = False
        
-        if(arg['-o']):
+        if(arg['--o']):
             print_to_file = True
 
         if(print_to_file):
-            #TODO:
+            #TODO: 
             print('print to file set')
         print(arg)
            
