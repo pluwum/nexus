@@ -7,13 +7,14 @@ https://raw.githubusercontent.com/docopt/docopt/master/examples/interactive_exam
 Usage:
     cli create_room <room_type> <room_name>
     cli add_person <person_name> <FELLOW> [<wants_accommodation>]
+    cli print_allocations [--o=<filename>]
     cli (-i | --interactive)
     cli (-h | --help | --version)
 
 Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
-    --baud=<n>  Baudrate [default: 9600]
+    --o=<filename>
 """
 
 import sys
@@ -134,20 +135,32 @@ class MyAndelaInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_print_allocations(self, arg):
-        """Usage: print_allocations [-o=<filename>]"""
+        """Usage: print_allocations [--o=<filename>]"""
+        print_to_file = False
+        if(arg['--o']):
+            print_to_file = True
 
         try:
             rooms = self.andela.getRoomAllocations()
 
             for room in rooms:
-                print(room.name.upper())
-                print("-------------------------------------")
+                if not print_to_file:
+                    print(room.name.upper())
+                    print("-------------------------------------")
+                else:
+                    #TODO: Write output to file here
+                    pass
                 members = []
                 for person_identifier in room.occupants:
                     person = self.andela.people[person_identifier]['person']
                     members.append(person.name)
-                print(", ".join(members))  
-                print('\n')
+
+                    if not print_to_file:
+                        print(", ".join(members))  
+                        print('\n')
+                    else:
+                        #TODO: Write output to file here
+                        pass
 
         except Exception as ex:
             print('{}\n'.format(ex))  
@@ -156,8 +169,17 @@ class MyAndelaInteractive (cmd.Cmd):
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [-o=<filename>]"""
 
-        print(arg)
+        doc = self.do_print_unallocated.__doc__
+        print_to_file = False
+       
+        if(arg['-o']):
+            print_to_file = True
 
+        if(print_to_file):
+            #TODO:
+            print('print to file set')
+        print(arg)
+           
     @docopt_cmd
     def do_reallocate_person(self, arg):
         """Usage: reallocate_person <person_identifier> <new_room_name>"""
