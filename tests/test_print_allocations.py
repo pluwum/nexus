@@ -1,3 +1,4 @@
+#TODO: Re-write tests after research sys.stdout
 from unittest import TestCase
 from classes.andela import Andela
 
