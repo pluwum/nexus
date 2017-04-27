@@ -20,9 +20,7 @@ class Andela():
 
 	def getRoomOccupants(self, room_name):
 		room = self.getRoom(room_name)
-		return room.getOccupants()	
-
-	
+		return room.getOccupants()
 
 	def getRoomAllocations(self):
 		rooms = self.dojo.getAllRoomsWithAtleastOneOccupant()
@@ -63,11 +61,11 @@ class Andela():
 							living_space = self.dojo.getFreeLivingSpace()
 							
 					if office_space is not None:
-						new_person.allocateOfficeSpace(office_space)
+						new_person.allocateOfficeSpace(office_space.name)
 						office_space.addOccupant(identifier)
 
 					if living_space is not None:
-						new_person.allocateLivingSpace(living_space)
+						new_person.allocateLivingSpace(living_space.name)
 						living_space.addOccupant(identifier)
 
 					self.people[identifier]	= {'person':new_person, 'office':new_person.office_space,'living_space':new_person.living_space}
@@ -77,5 +75,28 @@ class Andela():
 		else:
 			raise ValueError("One or more required inputs missing")
 
-	def rellocatePerson():
-		pass
+	def rellocatePerson(self, person_identifier, room_name):
+		if(isinstance(room_name, str)):
+			if(person_identifier in self.people):
+				rooms = self.dojo.getAllRooms()
+				if room_name in rooms:
+					if rooms[room_name].room_type == "office":
+						if room_name != self.people[person_identifier]['person'].office_space:
+							office_space = self.dojo.getFreeOfficeSpace()
+							office_space.addOccupant(person_identifier)
+							#TODO: Evict from old room
+						else:
+							raise ValueError("New room is the same as the old room")
+					else:
+						if room_name != self.people[person_identifier]['person'].living_space:
+							living_space = self.dojo.getFreeLivingSpace(room_name)
+							living_space.addOccupant(person_identifier)
+							#TODO: Evict from Old room
+						else:
+							raise ValueError("New room is the same as the old room")					
+				else:
+					raise ValueError("Room does not exist")
+			else:
+				raise ValueError("person with given ID does not exist")
+
+			return False	
