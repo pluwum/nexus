@@ -13,6 +13,9 @@ class Dojo(object):
 		else:
 			return False
 
+	def getAllRooms(self):
+		return self.rooms
+
 	def createRoom(self, name, room_type):
 		if (not(name is None) and not(room_type is None)):
 			if (isinstance(name, str) and isinstance(room_type, str)):
@@ -52,11 +55,11 @@ class Dojo(object):
 					return room_obj
 		return None
 
-	def getFreeOfficeSpace(self, room_to_ignore=None):
+	def getFreeOfficeSpace(self, room_to_ignore=None, room_to_ignore):
 		return self.getFreeRoom("office")
 
 	def getFreeLivingSpace(self, room_to_ignore=None):
-		return self.getFreeRoom("livingspace")
+		return self.getFreeRoom("livingspace", room_to_ignore)
 		
 	def allocateRoom():
 		pass
