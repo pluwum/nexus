@@ -135,4 +135,4 @@ class Andela():
 
 				self.addPerson(name, role, requires_living_space)
 		except Exception as ex:
-			print('{}\n'.format(ex)) 
+			print('{}\n'.format(ex))

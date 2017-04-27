@@ -62,4 +62,4 @@ class Dojo(object):
 		return self.getFreeRoom("livingspace", room_to_ignore)
 		
 	def allocateRoom():
-		pass
+		pass		
