@@ -111,4 +111,28 @@ class Andela():
 			else:
 				raise ValueError("person with given ID does not exist")
 
-			return False	
+			return False
+
+	def allocateFromFile(self):
+		path_to_file = "classes\people.txt"
+		try:
+			file = open(path_to_file, 'r')
+
+			for line in file:
+				args = line.split()
+				requires_living_space = False
+
+				if(len(args) >= 3):
+					name = args[0] + args[1]
+					role = args[2]
+
+					if(len(args) > 3):
+						requires_living_space = args[3]
+						if(requires_living_space):
+							requires_living_space = True
+				else:
+					print("You have arguments missing, please check and try again{}".format(args))
+
+				self.addPerson(name, role, requires_living_space)
+		except Exception as ex:
+			print('{}\n'.format(ex)) 
