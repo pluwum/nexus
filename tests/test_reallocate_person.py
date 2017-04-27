@@ -18,7 +18,7 @@ class TestPrintRoom(TestCase):
 		andela = Andela()
 		andela.createRoom("Blue","office")
 		alvin = andela.addPerson('alvin','staff')
-		
+
 		andela.createRoom("Pink","office")
 		andela.rellocatePerson(alvin,'Pink')
 
