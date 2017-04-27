@@ -28,8 +28,19 @@ class Andela():
 		rooms = self.dojo.getAllRoomsWithAtleastOneOccupant()
 		return rooms
 
-	def getUnallocated(self):
-		pass
+	def getUnallocatedPeople(self):
+		unallocated = []
+		for person in self.people:
+			person_object = self.people[person]['person']
+
+			if(person_object.office_space is None):
+				unallocated.append(person_object)
+
+			if(person_object.role == "fellow" and person_object.requires_living_space and person_object.living_space is None):
+				if person_object not in unallocated:
+					unallocated.append(person_object)
+
+		return unallocated
 
 	def addPerson(self, name, role, requires_living_space=False):
 		if name is not None and role is not None:
