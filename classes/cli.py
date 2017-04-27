@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
-The boiler plate for this file is taken from 
-the official docops examples from on github 
+The boiler plate for this file is taken from
+the official docops examples from on github
 https://raw.githubusercontent.com/docopt/docopt/master/examples/interactive_example.py
 
 Usage:
@@ -20,8 +20,8 @@ Options:
 import sys
 import cmd
 from docopt import docopt, DocoptExit
-
 from classes.dojo import Andela
+
 
 def docopt_cmd(func):
     """
@@ -54,12 +54,11 @@ def docopt_cmd(func):
     return fn
 
 
-
 class MyAndelaInteractive (cmd.Cmd):
     intro = 'Welcome to Office Space Allocation System!' \
         + ' (type help for a list of commands.)'
     prompt = '>>> '
-    file = None        
+    file = None
 
     def __init__(self):
         self.andela = Andela()
@@ -78,13 +77,13 @@ class MyAndelaInteractive (cmd.Cmd):
                 if(result):
                     print("\n An {} called {} has been successfully created! \n".format(room_type, room_name))
                 else:
-                    print("\n Creating An office called {} failed! \n".format(arg[room_name]))   
+                    print("\n Creating An office called {} failed! \n".format(arg[room_name]))
             except Exception as ex:
                 print('{}\n'.format(ex))
-        
+
     @docopt_cmd
     def do_add_person(self, arg):
-        
+
         """Usage: add_person <person_name> [<role>] [<wants_accommodation>]"""
 
         person_name = arg['<person_name>']
@@ -92,7 +91,7 @@ class MyAndelaInteractive (cmd.Cmd):
         first_name = person_name.split(' ', 1)[-1]
         wants_accommodation = arg['<wants_accommodation>']
 
-        if(wants_accommodation == 'Y' ):
+        if(wants_accommodation == 'Y'):
             wants_accommodation = True
         else:
             wants_accommodation = False
@@ -103,7 +102,7 @@ class MyAndelaInteractive (cmd.Cmd):
             if(person_identifier):
                 new_person = self.andela.people[person_identifier]['person']
                 print("{} {} has been successfully added".format(role.capitalize(), person_name.capitalize()))
-                
+
                 if(new_person.office_space is not None):
                     print("{} has been allocated the office {}".format(first_name.capitalize(), new_person.office_space.name))
                 else:
@@ -116,9 +115,9 @@ class MyAndelaInteractive (cmd.Cmd):
                         print("No Living Space was allocated to {}".format(first_name.capitalize()))
 
         except Exception as ex:
-            print('{}\n'.format(ex)) 
+            print('{}\n'.format(ex))
 
-    @docopt_cmd    
+    @docopt_cmd
     def do_print_room(self, arg):
         """Usage: print_room <room_name>"""
         try:
@@ -129,7 +128,7 @@ class MyAndelaInteractive (cmd.Cmd):
                 print(person.name)
 
         except Exception as ex:
-            print('{}\n'.format(ex))  
+            print('{}\n'.format(ex))
 
     @docopt_cmd
     def do_print_allocations(self, arg):
@@ -154,30 +153,30 @@ class MyAndelaInteractive (cmd.Cmd):
                     members.append(person.name)
 
                     if not print_to_file:
-                        print(", ".join(members))  
+                        print(", ".join(members))
                         print('\n')
                     else:
                         #TODO: Write output to file here
                         pass
 
         except Exception as ex:
-            print('{}\n'.format(ex))  
+            print('{}\n'.format(ex))
 
-    @docopt_cmd    
+    @docopt_cmd
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [--o=<filename>]"""
 
         doc = self.do_print_unallocated.__doc__
         print_to_file = False
-       
+
         if(arg['--o']):
             print_to_file = True
 
         if(print_to_file):
-            #TODO: 
+            #TODO:
             print('print to file set')
         print(arg)
-           
+
     @docopt_cmd
     def do_reallocate_person(self, arg):
         """Usage: reallocate_person <person_identifier> <new_room_name>"""
@@ -190,13 +189,13 @@ class MyAndelaInteractive (cmd.Cmd):
 
         print(arg)
 
-    @docopt_cmd    
+    @docopt_cmd
     def do_save_state(self, arg):
         """Usage: save_state [--db=<sqlite_database>]"""
 
         print(arg)
 
-    @docopt_cmd    
+    @docopt_cmd
     def do_load_state(self, arg):
         """Usage: load_state <sqlite_database>"""
 
@@ -212,7 +211,7 @@ class MyAndelaInteractive (cmd.Cmd):
         """Quits out of Interactive Mode."""
 
         print('Good Bye!')
-        exit()    
+        exit()
 
 opt = docopt(__doc__, sys.argv[1:])
 
