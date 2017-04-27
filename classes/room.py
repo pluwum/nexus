@@ -20,3 +20,13 @@ class Room():
 
 	def getOccupants(self):
 		return self.occupants
+
+class LivingSpace(Room):
+	def __init__(self, name):
+		self.room_type = "livingspace"
+		super(LivingSpace, self).__init__(name, 4)
+		
+class Office(Room):
+	def __init__(self, name):
+		self.room_type = "office"
+		super(Office, self).__init__(name, 6)
