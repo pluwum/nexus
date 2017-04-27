@@ -21,7 +21,6 @@ import sys
 import cmd
 from docopt import docopt, DocoptExit
 
-from classes.dojo import Dojo
 from classes.andela import Andela
 
 def docopt_cmd(func):
@@ -63,7 +62,6 @@ class MyAndelaInteractive (cmd.Cmd):
     file = None        
 
     def __init__(self):
-        #self.dojo1 = Dojo()
         self.andela = Andela()
 
         super(MyAndelaInteractive, self).__init__()
