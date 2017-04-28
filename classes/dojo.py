@@ -1,6 +1,7 @@
+from classes.database import Database
 from classes.person import Fellow, Staff
 from classes.room import LivingSpace, Office
-
+from classes.database import Database
 
 class Dojo():
 
@@ -10,6 +11,7 @@ class Dojo():
         self.rooms = {}
         #self.free_rooms = {}
         self.room_types = ['office', 'livingspace']
+        self.database = Database()
 
     def getRoomOccupants(self, room_name):
         """Do X and return a list."""
@@ -46,7 +48,7 @@ class Dojo():
                     living_space = None
                     office_space = self.getFreeOfficeSpace()
 
-                    if(role == "staff"):
+                    if(role.lower() == "staff"):
                         if requires_living_space is False:
                             new_person = Staff(name, identifier)
                         else:
@@ -147,7 +149,7 @@ class Dojo():
                             new_room = LivingSpace(name)
 
                         self.rooms[name] = new_room
-                        return True
+                        return new_room
                     raise ValueError(name+" Room already exists")
 
                 raise ValueError("Room must be either type 'office' or 'livingspace' ")
@@ -178,12 +180,40 @@ class Dojo():
     def getFreeLivingSpace(self, room_to_ignore=None):
         return self.getFreeRoom("livingspace", room_to_ignore)
 
-    def allocateRoom():
+    def allocateRoom(self):
         pass
+
+    def saveState(self):
+        self.database.saveState(self.people, self.rooms)
+
+    def loadState(self):
+        retrieved_state = self.database.retrieveState()
+        rooms_created = []
+        for person in retrieved_state['people']:
+            person_identifier = self.addPerson(person.name, person.role, person.requires_living_space)
+            self.people[person_identifier].allocateOfficeSpace(person.office_space)
+            room = createRoom(person.office_space, 'office')
+            rooms_created.append(person.office_space)
+            room.addOccupant(person_identifier)
+
+            if person.role == "fellow" and person.requires_living_space:
+                self.people[person_identifier].allocateLivingSpace(person.living_space)
+                self.createRoom()
+                room = createRoom(person.living_space, 'livingspace')
+                rooms_created.append(person.office_space)
+                room.addOccupant(person_identifier)
+
+        for room in retrieved_state['rooms']:
+            if room not in rooms_created:
+                createRoom(room.name, room.room_type)
+
 """
 dojo = Dojo()
 dojo.allocateFromFile()
+dojo.createRoom('Blue','office')
 dojo.addPerson('name', 'staff')
 for i in dojo.people:
     print(dojo.people[i])
+dojo.saveState()
+dojo.loadState()
 """
