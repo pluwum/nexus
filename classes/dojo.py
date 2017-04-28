@@ -1,10 +1,12 @@
+"""Summary
+"""
 from classes.database import Database
 from classes.person import Fellow, Staff
 from classes.room import LivingSpace, Office
 from classes.database import Database
 
 class Dojo():
-
+    """initialises a dojo object"""
     def __init__(self):
         self.people = {}
         self.allocations = {}
@@ -14,17 +16,20 @@ class Dojo():
         self.database = Database()
 
     def getRoomOccupants(self, room_name):
-        """Do X and return a list."""
+        """Returns a list with room occupants"""
         room = self.getRoom(room_name)
         return room.getOccupants()
 
     def getRoomAllocations(self):
-        """Do X and return a list."""
+        """Returns all the list of room objects with atleast one occupant"""
         rooms = self.getAllRoomsWithAtleastOneOccupant()
         return rooms
 
     def getUnallocatedPeople(self):
-        """Do X and return a list."""
+        """
+        Finds all Persons without an office or living space
+        returns a list of Person child objects
+        """
         unallocated = []
         for person in self.people:
             person_object = self.people[person]
@@ -39,30 +44,43 @@ class Dojo():
         return unallocated
 
     def addPerson(self, name, role, requires_living_space=False):
+        """Enrolls person to Dojo
+
+        Args:
+            name (str): Name of Person being enrolled
+            role (str): fellow or staff
+            requires_living_space (bool, optional): Specifies need for living space
+
+        Returns:
+            int: Unique Person ID number
+        """
         if name is not None and role is not None:
             roles = ['staff', 'fellow']
-
+            #check if name is a string
             if (isinstance(name, str) and isinstance(role, str) and isinstance(requires_living_space, bool)):
                 if(role.lower() in roles):
                     identifier = len(self.people) + 1
                     living_space = None
                     office_space = self.getFreeOfficeSpace()
-
+                    #check if enrollee is staff or fellow
                     if(role.lower() == "staff"):
                         if requires_living_space is False:
                             new_person = Staff(name, identifier)
                         else:
                             raise ValueError("Unexpected input: Living Space not provided for staff")
                     else:
+                        #Enroll fellow
                         new_person = Fellow(name, identifier, requires_living_space)
                         if requires_living_space:
                             living_space = self.getFreeLivingSpace()
 
                     if office_space is not None:
+                        #Assign office space is free room is found
                         new_person.allocateOfficeSpace(office_space.name)
                         office_space.addOccupant(identifier)
 
                     if living_space is not None:
+                        #Assign living space if found and is required
                         new_person.allocateLivingSpace(living_space.name)
                         living_space.addOccupant(identifier)
 
@@ -73,6 +91,15 @@ class Dojo():
         raise ValueError("One or more required inputs missing")
 
     def rellocatePerson(self, person_identifier, room_name):
+        """Relocates person to room_name
+
+        Args:
+            person_identifier (int): Persons ID Number
+            room_name (str): Room Name
+
+        Returns:
+            bool: True if successful
+        """
         if(isinstance(room_name, str)):
             if(person_identifier in self.people):
                 person = self.people[person_identifier]
@@ -107,6 +134,7 @@ class Dojo():
         raise ValueError("Invalid inputs received please try again")
 
     def allocateFromFile(self):
+        """Enrols People to Dojo from a file"""
         path_to_file = "data\people.txt"
         try:
             file = open(path_to_file, 'r')
@@ -117,7 +145,7 @@ class Dojo():
                 if(len(args) >= 3):
                     name = args[0] + args[1]
                     role = args[2]
-
+                    #check if requires living space
                     if(len(args) > 3):
                         requires_living_space = args[3]
                         if(requires_living_space):
@@ -130,14 +158,17 @@ class Dojo():
             print('{}\n'.format(ex))
 
     def getRoom(self, room_name):
+        """Takes room name and returns room object"""
         if room_name in self.rooms:
             return self.rooms[room_name]
         raise ValueError("Sorry, Room does not exist")
 
     def getAllRooms(self):
+        """Returns all rooms in the Dojo"""
         return self.rooms
 
     def createRoom(self, name, room_type):
+        """Creates a new room in the Dojo"""
         if (not(name is None) and not(room_type is None)):
             if (isinstance(name, str) and isinstance(room_type, str)):
                 if room_type.lower() in self.room_types:
@@ -157,6 +188,7 @@ class Dojo():
         raise ValueError("One or more arguments required is not given")
 
     def getAllRoomsWithAtleastOneOccupant(self):
+        """Returns List of All Rooms with Atleast one occupant"""
         rooms = []
         for room in self.rooms:
             room_obj = self.rooms[room]
@@ -167,6 +199,15 @@ class Dojo():
         return rooms
 
     def getFreeRoom(self, room_type, room_to_ignore=None):
+        """Returns a random room
+
+        Args:
+            room_type (str): Room type
+            room_to_ignore (None, optional): Specifies room to skip. useful during reallocation
+
+        Returns:
+            TYPE: Description
+        """
         for room in self.rooms:
             room_obj = self.rooms[room]
             if room_obj.name != room_to_ignore and room_obj.room_type == room_type:
@@ -175,18 +216,22 @@ class Dojo():
         return None
 
     def getFreeOfficeSpace(self, room_to_ignore=None):
+        """Returns one free office space"""
         return self.getFreeRoom("office", room_to_ignore)
 
     def getFreeLivingSpace(self, room_to_ignore=None):
+        """Returns one free living space"""
         return self.getFreeRoom("livingspace", room_to_ignore)
 
     def allocateRoom(self):
         pass
 
     def saveState(self):
+        """Persists state to the database"""
         self.database.saveState(self.people, self.rooms)
 
     def loadState(self):
+        """Loads Saves state from the database"""
         retrieved_state = self.database.retrieveState()
         rooms_created = []
         for person in retrieved_state['people']:
@@ -206,14 +251,3 @@ class Dojo():
         for room in retrieved_state['rooms']:
             if room not in rooms_created:
                 createRoom(room.name, room.room_type)
-
-"""
-dojo = Dojo()
-dojo.allocateFromFile()
-dojo.createRoom('Blue','office')
-dojo.addPerson('name', 'staff')
-for i in dojo.people:
-    print(dojo.people[i])
-dojo.saveState()
-dojo.loadState()
-"""
