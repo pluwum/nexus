@@ -1,3 +1,6 @@
+"""These classes collectively test the fuctionalities provided by the Dojo Class
+"""
+
 from classes.dojo import Dojo
 from unittest import TestCase
 
