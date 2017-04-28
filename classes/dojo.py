@@ -88,7 +88,7 @@ class Dojo():
                                 office_space.addOccupant(person_identifier)
                                 person.allocateOfficeSpace(office_space.name)
                                 old_room.evictOccupant(person_identifier)
-                                return
+                                return True
                         raise ValueError("New room is the same as the old room")
                     else:
                         if room_name != self.people[person_identifier].living_space:
@@ -100,11 +100,11 @@ class Dojo():
                                 living_space.addOccupant(person_identifier)
                                 person.allocateLivingSpace(living_space.name)
                                 old_room.evictOccupant(person_identifier)
-                                return
+                                return True
                         raise ValueError("New room is the same as the old room")
                 raise ValueError("Room does not exist")
             raise ValueError("person with given ID does not exist")
-        raise ValueError("person with given ID does not exist")
+        raise ValueError("Invalid inputs received please try again")
 
     def allocateFromFile(self):
         path_to_file = "data\people.txt"
