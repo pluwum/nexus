@@ -29,9 +29,6 @@ class TestAddPerson(TestCase):
     def test_method_raises_error_if_staff_wants_accomodation(self):
         self.assertRaises(ValueError,self.dojo.addPerson,"Patricia",'staff',True)
 
-    def test_method_raises_error_if_person_already_exists(self):
-        pass
-
     def test_method_raises_error_if_person_name_arg_missing(self):
         self.assertRaises(ValueError,self.dojo.addPerson, None, 'staff')
 
@@ -184,12 +181,6 @@ class TestReallocate(TestCase):
         andela.rellocatePerson(alvin, 'Pink')
 
         self.assertEqual('Pink', andela.people[alvin].office_space)
-
-    def test_method_allocates_room_if_person_unlocated(self):
-        pass
-
-    def test_method_raises_exception_if_room_is_full(self):
-        pass
 
     def test_method_raises_exception_if_room_doesnt_exist(self):
         self.assertRaises(ValueError, self.dojo.rellocatePerson, self.alvin, 'White')
