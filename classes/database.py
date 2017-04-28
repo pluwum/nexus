@@ -24,6 +24,7 @@ class Database(object):
 			self.session.commit()
 
 	def	retrieveState(self):
+		"""Querries the database for previously saved state"""
 		people = self.session.query(TablePeople).order_by(TablePeople.id)
 		rooms = self.session.query(TableRoom).order_by(TableRoom.id)
 		return {'people':people, 'rooms':rooms}

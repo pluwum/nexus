@@ -7,9 +7,9 @@ from sqlalchemy.orm import relationship, backref
 engine = create_engine('sqlite:///data/andela.db', echo=False)
 Base = declarative_base()
 
-########################################################################
+
 class TablePeople(Base):
-    """"""
+    """Defines structure of the People table"""
     __tablename__ = "people"
 
     id = Column(Integer, primary_key=True)
@@ -22,7 +22,7 @@ class TablePeople(Base):
 
     #----------------------------------------------------------------------
     def __init__(self, identifier, name, office_space, living_space, role):
-        """"""
+        """Initialises a model db object for the person table"""
         self.name = name
         self.office_space = office_space
         self.living_space = living_space
@@ -31,7 +31,7 @@ class TablePeople(Base):
 
 
 class TableRoom(Base):
-    """"""
+    """Defines structure of the Room Table"""
     __tablename__ = "room"
 
     id = Column(Integer, primary_key=True)
@@ -42,7 +42,7 @@ class TableRoom(Base):
 
     #----------------------------------------------------------------------
     def __init__(self, name, occupants, max_capacity, room_type):
-        """"""
+        """initializes a the db model object for the Room Table"""
         self.name = name
         self.max_capacity = max_capacity
         self.room_type = room_type
