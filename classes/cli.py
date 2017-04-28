@@ -139,7 +139,10 @@ class MyAndelaInteractive (cmd.Cmd):
     @docopt_cmd
     def do_print_allocations(self, arg):
         """Usage: print_allocations [--o=<filename>]"""
+
         print_to_file = False
+
+        text_to_print = ""
         if(arg['--o']):
             print_to_file = True
 
@@ -148,8 +151,9 @@ class MyAndelaInteractive (cmd.Cmd):
 
             for room in rooms:
                 if not print_to_file:
-                    print(room.name.upper())
-                    print("-------------------------------------")
+                    text_to_print = text_to_print+"ROOM {} \n".format(room.name.upper())
+
+                    text_to_print = text_to_print+"-------------------------------------\n"
                 else:
                     #TODO: Write output to file here
                     pass
@@ -158,12 +162,14 @@ class MyAndelaInteractive (cmd.Cmd):
                     person = self.dojo.people[person_identifier]
                     members.append(person.name)
 
-                    if not print_to_file:
-                        print(", ".join(members))
-                        print('\n')
-                    else:
-                        #TODO: Write output to file here
-                        pass
+                text_to_print = text_to_print+", ".join(members)
+                text_to_print = text_to_print+"\n"
+
+            if not print_to_file:
+                print(text_to_print)
+            else:
+                file = open(arg['--o'], 'w')
+                file.write(text_to_print)
 
         except Exception as ex:
             print('{}\n'.format(ex))
