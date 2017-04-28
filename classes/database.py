@@ -7,12 +7,12 @@ from classes.tables import *
 class Database(object):
 	def __init__(self):
 		self.engine = create_engine('sqlite:///data/andela.db', echo=False)
-		# create a Session
+		"""create a Session"""
 		Session = sessionmaker(bind=self.engine)
 		self.session = Session()
 
 	def saveState(self, people, rooms):
-		# Create db objects in prepration for pushing to database
+		"""Create db objects in prepration for pushing to database"""
 		for room in rooms:
 			room = TableRoom(rooms[room].name, 'rooms[room].occupants', rooms[room].max_capacity, rooms[room].room_type)
 			self.session.add(room)

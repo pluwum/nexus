@@ -1,9 +1,8 @@
-"""Summary
+"""This class creates persons, assigns rooms and tracks allocations
 """
 from classes.database import Database
 from classes.person import Fellow, Staff
 from classes.room import LivingSpace, Office
-from classes.database import Database
 
 class Dojo():
     """initialises a dojo object"""
@@ -234,20 +233,21 @@ class Dojo():
         """Loads Saves state from the database"""
         retrieved_state = self.database.retrieveState()
         rooms_created = []
+        #Recreate People Objects
         for person in retrieved_state['people']:
             person_identifier = self.addPerson(person.name, person.role, person.requires_living_space)
             self.people[person_identifier].allocateOfficeSpace(person.office_space)
             room = createRoom(person.office_space, 'office')
             rooms_created.append(person.office_space)
             room.addOccupant(person_identifier)
-
+            #ReAssign living Space if person had one
             if person.role == "fellow" and person.requires_living_space:
                 self.people[person_identifier].allocateLivingSpace(person.living_space)
                 self.createRoom()
                 room = createRoom(person.living_space, 'livingspace')
                 rooms_created.append(person.office_space)
                 room.addOccupant(person_identifier)
-
+        #Recreate unAllocated Rooms i.e Rooms not created above
         for room in retrieved_state['rooms']:
             if room not in rooms_created:
                 createRoom(room.name, room.room_type)
